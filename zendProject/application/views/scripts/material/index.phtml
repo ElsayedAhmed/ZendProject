@@ -1,0 +1,40 @@
+
+<?php
+$this->title = "Materials";
+$this->headTitle($this->title);
+?>
+<p><a href="<?php echo $this->url(array('controller'=>'Material',
+ 'action'=>'add'));?>">Add New Material</a></p>
+
+<a href="<?php echo $this->url(array('controller'=>'Material',
+ 'action'=>'index'));?>">Materials</a></p>
+<table border="1px">
+<tr>
+	 <th>name</th>
+	 <th>file path</th>
+	 <th>type</th>
+	 <th>is downloadable</th>
+	 <th>is hidden</th>
+	 <th>downloads</th>
+	 <th>course id</th>
+	 <th>user id</th>
+	 <th>&nbsp;</th>
+</tr>
+<?php foreach($this->materials as $material) : ?>
+<tr>
+	 <td><?php echo $this->escape($material->name);?></td>
+	 <td><?php echo $this->escape($material->file_path);?></td>
+	 <td><?php echo $this->escape($material->type);?></td>
+	 <td><?php echo $this->escape($material->is_downloadable);?></td>
+	 <td><?php echo $this->escape($material->downloads_count);?></td>
+	 <td><?php echo $this->escape($material->course_id);?></td>
+	 <td><?php echo $this->escape($material->user_id);?></td>
+	<td>
+	<a href="<?php echo $this->url(array('controller'=>'Material',
+		 'action'=>'edit', 'id'=>$material->id));?>">Edit </a>
+		 <a href="<?php echo $this->url(array('controller'=>'Material',
+		 'action'=>'delete', 'id'=>$material->id));?>"> Delete</a>
+	</td>
+</tr>
+<?php endforeach; ?>
+</table>

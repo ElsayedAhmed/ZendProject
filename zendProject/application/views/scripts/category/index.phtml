@@ -1,0 +1,21 @@
+<a href="<?php echo $this->url(array('controller'=>'category',
+	 'action'=>'add'));?>">Add</a>
+<table border="1px">
+<tr>
+	 <th>Username</th>
+	 <th>Action</th>
+	 <th>&nbsp;</th>
+</tr>
+
+<?php foreach($this->categories as $category) : ?>
+<tr>
+ <td><?php echo $this->escape($category->name);?></td>
+ <td>
+ <a href="<?php echo $this->url(array('controller'=>'category',
+	 'action'=>'edit', 'id'=>$category->id));?>">Edit</a>
+	 <a href="<?php echo $this->url(array('controller'=>'category',
+	 'action'=>'delete', 'id'=>$category->id));?>">Delete</a>
+ </td>
+</tr>
+<?php endforeach; ?>
+</table>

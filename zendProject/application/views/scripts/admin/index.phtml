@@ -1,0 +1,32 @@
+
+<?php
+$this->title = "My Albums";
+$this->headTitle($this->title);
+?>
+<p><a href="<?php echo $this->url(array('controller'=>'Admin',
+ 'action'=>'add'));?>">Add new user</a></p>
+
+<a href="<?php echo $this->url(array('controller'=>'Category',
+ 'action'=>'index'));?>">Categories</a></p>
+
+<a href="<?php echo $this->url(array('controller'=>'Material',
+ 'action'=>'index'));?>">Materials</a></p>
+<table border="1px">
+<tr>
+	 <th>Username</th>
+	 <th>Gender</th>
+	 <th>&nbsp;</th>
+</tr>
+<?php foreach($this->user as $user) : ?>
+<tr>
+ <td><?php echo $this->escape($user->username);?></td>
+ <td><?php echo $this->escape($user->gender);?></td>
+ <td>
+ <a href="<?php echo $this->url(array('controller'=>'Admin',
+	 'action'=>'edit', 'id'=>$user->id));?>">Edit</a>
+	 <a href="<?php echo $this->url(array('controller'=>'Admin',
+	 'action'=>'delete', 'id'=>$user->id));?>">Delete</a>
+ </td>
+</tr>
+<?php endforeach; ?>
+</table>

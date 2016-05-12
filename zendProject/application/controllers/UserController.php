@@ -32,6 +32,7 @@ class UserController extends Zend_Controller_Action
 
     //if request isn't post......
         $this->view->form = $form;
+    }
 
 
     public function registerAction()

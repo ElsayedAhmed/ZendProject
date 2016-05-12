@@ -15,6 +15,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$view->headLink()->appendStylesheet('/zendProject/ZendProject/zendProject/public/assets/css/style.css');
 
 		$view->headScript()->prependFile('/zendProject/ZendProject/zendProject/public/assets/js/custom.js');
+		$view->headScript()->prependFile('/zendProject/ZendProject/zendProject/public/assets/js/bootstrap.min.js');
+		$view->headScript()->prependFile('/zendProject/ZendProject/zendProject/public/assets/js/jquery.min.js');
 
 		$view->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0');
 		$view->headMeta()->appendName('description', 'eLearning is a modern and fully responsive Template by WebThemez.');

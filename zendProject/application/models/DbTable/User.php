@@ -52,8 +52,17 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
     {
         return $this->delete('id='.$id);
     }
+
+#sarah
+  public function registerUser($userInfo)
+  {
+    $row = $this->createRow();
+    $row->username = $userInfo['username'];
+    $row->email = $userInfo['email'];
+    $row->password = md5($userInfo['password']);
+    $row->gender = $userInfo['gender'];
+    $row->country = $userInfo['country'];
+
+    return $row->save();
+  }
 }
-
-
-
-

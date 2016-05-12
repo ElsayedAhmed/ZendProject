@@ -54,22 +54,24 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
     }
 
     public function loginUser($userInfo){
+        $form = new Application_Form_Login();
 
-      $db = Zend_Db_Table::getDefaultAdapter();
-      $authAdapter = new Zend_Auth_Adapter_DbTable($db,'user','email', 'password');
-      $authAdapter->setIdentity($userInfo['email']);
-      $authAdapter->setCredential($userInfo['password']);
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $authAdapter = new Zend_Auth_Adapter_DbTable($db,'user','email', 'password');
+        $authAdapter->setIdentity($userInfo['email']);
+        $authAdapter->setCredential(md5($userInfo['password']));
 
-      $result = $authAdapter->authenticate();
-      if($result->isValid()){
+        $result = $authAdapter->authenticate();
 
-        $auth =Zend_Auth::getInstance();
-        $storage = $auth->getStorage();
-        $storage->write($authAdapter->getResultRowObject(array('email',)));
-      }
-      // else{
-      //   echo "plz enter valid email or password";
-      // }
+        if($result->isValid()){
+
+            $auth =Zend_Auth::getInstance();
+            $storage = $auth->getStorage();
+            $storage->write($authAdapter->getResultRowObject(array('id','email')));
+            return 1;
+        }
+        else
+        return 0;
     }
 
     public function registerUser($userInfo)
@@ -80,6 +82,13 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
     $row->password = md5($userInfo['password']);
     $row->gender = $userInfo['gender'];
     $row->country = $userInfo['country'];
+
+//set a session......
+    $db = Zend_Db_Table::getDefaultAdapter();
+    $authAdapter = new Zend_Auth_Adapter_DbTable($db,'user','email', 'password');
+    $auth =Zend_Auth::getInstance();
+    $storage = $auth->getStorage();
+    $storage->write($authAdapter->getResultRowObject(array('id','email')));
 
     return $row->save();
   }

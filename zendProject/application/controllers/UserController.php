@@ -7,6 +7,7 @@ class UserController extends Zend_Controller_Action
     public function init()
     {
        $this->model = new Application_Model_DbTable_User();
+       $this->authorization =Zend_Auth::getInstance();
     }
 
     public function indexAction()
@@ -17,31 +18,44 @@ class UserController extends Zend_Controller_Action
 
     public function loginAction()
     {
+        if($this->authorization->hasIdentity()) {
+            $this->redirect('user/index');
+        }
+
         $form = new Application_Form_Login();
 
     //if request is post......
         if ($this->getRequest()->isPost()) {
-        	// var_dump($form->isValid($this->getRequest()->getParams()));
-        	// die;
             if ($form->isValid($this->getRequest()->getParams())) {
                 $data = $form->getValues();
             }
-            $this->model->loginUser($data);
-                $this->redirect('user/index');
+            if(!$this->model->loginUser($data)){
+                echo "<p><font size='4' color='red'><b>Invalid Username OR Password</b></font</p>";
+                $this->view->form = $form;
+                
+            }
+            if($this->model->loginUser($data)){
+               $this->redirect('user/index'); 
+            }
         }
-
-    //if request isn't post......
-        $this->view->form = $form;
+        else{
+            $this->view->form = $form;
+        }
     }
 
 
     public function registerAction()
     {
+    //chech if session.....
+        if($this->authorization->hasIdentity()) {
+            $this->redirect('user/index');
+        }
+
         $form = new Application_Form_Register();
-        $sess = new Zend_Session_Namespace('LikeLynda');
+        // $sess = new Zend_Session_Namespace('LikeLynda');
         $this->view->form = $form;
         #session
-        $sess->username = $data['username'];
+        // $sess->username = $data['username'];
 
         if($this->getRequest()->isPost()){
             if($form->isValid($this->getRequest()->getParams())){

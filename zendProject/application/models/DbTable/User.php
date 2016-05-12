@@ -52,6 +52,7 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
     {
         return $this->delete('id='.$id);
     }
+<<<<<<< HEAD
 
     public function loginUser($userInfo){
 
@@ -74,5 +75,19 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
 }
 
 
+=======
+>>>>>>> d24e5b691341cf016f85d8a9fb360d9f241c456a
 
+#sarah
+  public function registerUser($userInfo)
+  {
+    $row = $this->createRow();
+    $row->username = $userInfo['username'];
+    $row->email = $userInfo['email'];
+    $row->password = md5($userInfo['password']);
+    $row->gender = $userInfo['gender'];
+    $row->country = $userInfo['country'];
 
+    return $row->save();
+  }
+}

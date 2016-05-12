@@ -1,3 +1,19 @@
+<ul class="nav nav-pills nav-stacked  col-xs-4 col-md-2" height="100" >
+    <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Admin'));?>">manage users</a></li>
+    <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Course'));?>">manage courses</a></li>
+     <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Category'));?>">manage categories</a></li>
+    <li role="presentation" class="active"><a href="#">manage courses</a></li>
+    <li role="presentation" class="active"><a href="#"></a></li>
+    <li role="presentation" class="active"><a href="#"></a></li>
+    <li role="presentation" class="active"><a href="#"></a></li>
+	<li role="presentation" class="active"><a href="#"></a></li>
+	<li role="presentation" class="active"><a href="#">manage courses</a></li>
+    <li role="presentation" class="active"><a href="#"></a></li>
+    <li role="presentation" class="active"><a href="#"></a></li>
+    <li role="presentation" class="active"><a href="#"></a></li>
+	<li role="presentation" class="active"><a href="#"></a></li>
+</ul>
+
 <p><a href="<?php echo $this->url(array('controller'=>'Admin',
  'action'=>'add'));?>">Add new user</a></p>
 
@@ -6,22 +22,23 @@
 
 <a href="<?php echo $this->url(array('controller'=>'Material',
  'action'=>'index'));?>">Materials</a></p>
-<table border="1px">
-<tr>
-	 <th>Username</th>
-	 <th>Gender</th>
-	 <th>&nbsp;</th>
-</tr>
-<?php foreach($this->user as $user) : ?>
-<tr>
- <td><?php echo $this->escape($user->username);?></td>
- <td><?php echo $this->escape($user->gender);?></td>
- <td>
- <a href="<?php echo $this->url(array('controller'=>'Admin',
-	 'action'=>'edit', 'id'=>$user->id));?>">Edit</a>
-	 <a href="<?php echo $this->url(array('controller'=>'Admin',
-	 'action'=>'delete', 'id'=>$user->id));?>">Delete</a>
- </td>
-</tr>
-<?php endforeach; ?>
-</table>
+
+<div class="panel panel-default col-md-3" >
+	    <table class="table">
+		  	<tr>
+				 <th><a href="fghjk">Username</a></th>
+				 <th>Gender</th>
+				 <th>&nbsp;</th>
+			</tr>
+			<?php foreach($this->user as $user) : ?>
+			<tr>
+				 <td><?php echo $this->escape($user->username);?></td>
+				 <td><?php echo $this->escape($user->gender);?></td>
+				 <td><a href="<?php echo $this->url(array('controller'=>'Admin',
+				 'action'=>'edit', 'id'=>$user->id));?>">Edit</a>
+				 <a href="<?php echo $this->url(array('controller'=>'Admin',
+				 'action'=>'delete', 'id'=>$user->id));?>">Delete</a></td>
+			</tr>
+			<?php endforeach; ?>
+		</table>
+</div>

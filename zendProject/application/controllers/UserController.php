@@ -17,11 +17,17 @@ class UserController extends Zend_Controller_Action
     public function registerAction()
     {
         $form = new Application_Form_Register();
+        $sess = new Zend_Session_Namespace('LikeLynda');
         $this->view->form = $form;
+        #session
+        $sess->username = $data['username'];
 
         if($this->getRequest()->isPost()){
             if($form->isValid($this->getRequest()->getParams())){
                 $data = $form->getValues();
+                #session
+                $sess->username = $data['username'];
+
                 if ($this->model->registerUser($data)){
                     // #send mail
                     // $config = array('ssl' => 'tls',

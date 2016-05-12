@@ -52,6 +52,25 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
     {
         return $this->delete('id='.$id);
     }
+
+    public function loginUser($userInfo){
+
+      $db = Zend_Db_Table::getDefaultAdapter();
+      $authAdapter = new Zend_Auth_Adapter_DbTable($db,'user','email', 'password');
+      $authAdapter->setIdentity($userInfo['email']);
+      $authAdapter->setCredential($userInfo['password']);
+
+      $result = $authAdapter->authenticate();
+      if($result->isValid()){
+
+        $auth =Zend_Auth::getInstance();
+        $storage = $auth->getStorage();
+        $storage->write($authAdapter->getResultRowObject(array('email',)));
+      }
+      // else{
+      //   echo "plz enter valid email or password";
+      // }
+    }
 }
 
 

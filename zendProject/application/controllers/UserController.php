@@ -7,7 +7,8 @@ class UserController extends Zend_Controller_Action
     public function init()
     {
        $this->model = new Application_Model_DbTable_User();
-       $this->authorization =Zend_Auth::getInstance();
+       $this->authorization = Zend_Auth::getInstance();
+       //$this->front = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
     }
 
     public function indexAction()
@@ -19,6 +20,8 @@ class UserController extends Zend_Controller_Action
     public function loginAction()
     {
         if($this->authorization->hasIdentity()) {
+            // var_dump($this->front);
+            // die;
             $this->redirect('user/index');
         }
 
@@ -35,7 +38,7 @@ class UserController extends Zend_Controller_Action
                 
             }
             if($this->model->loginUser($data)){
-               $this->redirect('user/index'); 
+                $this->redirect('user/index'); 
             }
         }
         else{

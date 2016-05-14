@@ -40,6 +40,7 @@ $this->headTitle($this->title);
 	 <td>
 	 	<a href="<?php echo $this->url(array('controller'=>'Material',
 		 	'action'=>'details', 'id'=>$material->id));?>"><?php echo $this->escape($material->file_path);?></a>
+
 	</td>
 	 <td><?php echo $this->escape($material->type);?></td>
 	 <td><?php echo $this->escape($material->is_downloadable);?></td>

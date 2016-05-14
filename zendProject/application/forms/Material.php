@@ -60,8 +60,9 @@ class Application_Form_Material extends Zend_Form
             //          $is_hidden,$downloads_count,$course_id,$user_id
 
         $name = new Zend_Form_Element_Text('material_name');
-        $name->addFilter('Int');
+        $name->addFilter('stringTrim');
         $name->setLabel('name');
+        $name->addValidator('NotEmpty');
 
         $type = new Zend_Form_Element_Text('type');
         $type->setLabel('type')

@@ -53,7 +53,8 @@ class MaterialController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             if ($form->isValid($formData)) {
 
-                $name = $form->getValue('name');
+                $name = $form->getValue('material_name');
+                
                 $user_id = $form->getValue('user_id');
                 $course_id = $form->getValue('course_id');
 
@@ -67,8 +68,8 @@ class MaterialController extends Zend_Controller_Action
                 $type = $form->getValue('type');
                 $is_downloadable = $form->getValue('is_downloadable');
                 $is_hidden = $form->getValue('is_hidden');
-                $downloads_count = $form->getValue('downloads_count');
-
+                $downloads_count = $form->getValue('Downloads');
+                
                 $user = new Application_Model_DbTable_Material();
                 $user->addMaterial($name, $user_id, $course_id, $file_path, $type,
                     $is_downloadable, $is_hidden, $downloads_count);
@@ -110,7 +111,15 @@ class MaterialController extends Zend_Controller_Action
 
         
         // $my_material = $this->material->detailsMaterial($id);
-        
+
+        // $this->getResponse()
+        //      ->setHeader('Content-Disposition', 'attachment; filename=Eman')
+        //      ->setHeader('Content-type', 'application/x-pdf');
+        // echo file_get_contents("/zendProject/ZendProject/zendProject/public/upload/ZF_SLMS_P02.pdf");
+
+
+        $this->_helper->layout->disableLayout();
+
         $this->view->my_material = $my_material;
     }
 

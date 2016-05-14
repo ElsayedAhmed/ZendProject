@@ -3,7 +3,10 @@ class AdminController extends Zend_Controller_Action
 {
     public function init()
     {
-        /* Initialize action controller here */
+       $authorization =Zend_Auth::getInstance();
+        if(!($authorization->hasIdentity())) {
+            $this->redirect('user/login');
+        }
     }
 
     public function indexAction()
@@ -43,10 +46,21 @@ class AdminController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        $user = new Application_Model_DbTable_User();
-        $id = $this->getRequest()->getParam('id');
-        if($user->deleteUser($id))
-            $this->redirect('Admin/index');
+        if ($this->getRequest()->isPost()) {
+            $del = $this->getRequest()->getPost('del');
+            if ($del == 'Yes') {
+                $id = $this->getRequest()->getPost('id');
+                $user = new Application_Model_DbTable_User();
+                $user->deleteUser($id);
+                }
+                $this->_helper->redirector('index');
+                } else {
+                    $id = $this->_getParam('id', 0);
+                    $user = new Application_Model_DbTable_User();
+                    //edited
+                    $this->view->user = $user->getUser($id);
+                    }
+
     }
 
     public function listAction()
@@ -105,9 +119,8 @@ class AdminController extends Zend_Controller_Action
                 $is_banned=$form->getValue('is_banned');
 
                 $user=new Application_Model_DbTable_User();
-
-                $user->updateUser($id,$username, $email,$password,
-                $image, $signature, $gender, $country, $is_admin, $is_banned);
+                $user->updateUser($id,$username, $email,$password, $image, $signature,
+                       $gender, $country, $is_admin, $is_banned);
                 $this->_helper->redirector('index');
             }
             else{
@@ -120,6 +133,7 @@ class AdminController extends Zend_Controller_Action
                 $form->populate($user->getUser($id));
              }
          }
+
     }
 }
 

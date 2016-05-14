@@ -15,21 +15,22 @@ class Application_Model_DbTable_Material extends Zend_Db_Table_Abstract
 		return $row->toArray();
 	}
 
-    public function addMaterial($id,$name, $file_path, $type,$is_downloadable,
-    			 $is_hidden,$downloads_count,$course_id,$user_id)
+    public function addMaterial($name, $user_id, $course_id, $file_path, $type,
+                    $is_downloadable, $is_hidden, $downloads_count)
     {
-   	    $data = array(
-            'name' => $name,
-     	    	'file_path' => $file_path,
-     	    	'type' => $type,
-     	    	'is_downloadable' => $is_downloadable,
-     	    	'is_hidden' => $is_hidden,
-     	    	'downloads_count' => $downloads_count,
-     	    	'course_id' => $course_id,
-     	    	'user_id' => $user_id,
-   	    	);
+        $row = $this->createRow();
+        $row->name = $name;
+        $row->user_id = $user_id;
+        $row->course_id = $course_id;
+        $row->file_path = $file_path;
+        $row->type = $type;
+        $row->is_downloadable = $is_downloadable;
+        $row->is_hidden = $is_hidden;
+        $row->downloads_count = $downloads_count;
         
-	      $this->insert($data);
+        return $row->save();
+        
+	      // $this->insert($data);
     }
 
     public function hideMaterial($id){
@@ -132,4 +133,11 @@ class Application_Model_DbTable_Material extends Zend_Db_Table_Abstract
         Zend_Debug::dump($results);
     }
 
+    public function detailsMaterial($id){
+        $row = $this->fetchRow('id = ' . $id);
+        return $row->toArray();
+        
+        // $select = $this->select('*')->setIntegrityCheck(false)->join('comments','posts.id = comments.post_id',array('*'=>'*', 'comment_id'=>'comments.id', 'comment_content'=>'comments.content'));
+        // return $this->fetchAll($select)->toArray();
+    }
 }

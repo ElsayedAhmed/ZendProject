@@ -5,7 +5,10 @@ class IndexController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
+       $authorization =Zend_Auth::getInstance();
+        if(!($authorization->hasIdentity())) {
+            $this->redirect('user/login');
+        }
     }
 
     public function indexAction()
@@ -16,4 +19,6 @@ class IndexController extends Zend_Controller_Action
 
 
 }
+
+
 

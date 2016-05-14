@@ -15,8 +15,25 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
 		return $row->toArray();
 	}
 
+    //  public function getUser($id)
+    // {
+    //         $id = (int)$id;
+    //         $row = $this->fetchRow('id = ' . $id);
+    //         if (!$row) {
+    //           throw new Exception("Could not find row $id");
+    //         }
+    //         return $row->toArray();
+            // foreach ($valid as $key => $value) {
+            //     if($key=='is_admin'&$value=='1'){
+
+            //     }
+            //     # code...
+            // }
+    //}
+
+
     public function addUser($username, $email,$password, $image, $signature,
-      $gender, $country, $is_admin, $is_banned)
+                              $gender, $country, $is_admin, $is_banned)
     {
         // $row = $this->createRow();
   	     $data = array(
@@ -55,7 +72,6 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
     {
         return $this->delete('id='.$id);
     }
-
 
     public function upgradeUser($id){
         $id = (int)$id;
@@ -121,6 +137,44 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
     }
 }
 
+    // public function loginUser($userInfo){
+    //     $form = new Application_Form_Login();
 
+    //     $db = Zend_Db_Table::getDefaultAdapter();
+    //     $authAdapter = new Zend_Auth_Adapter_DbTable($db,'user','email', 'password');
+    //     $authAdapter->setIdentity($userInfo['email']);
+    //     $authAdapter->setCredential(md5($userInfo['password']));
 
+    //     $result = $authAdapter->authenticate();
+
+    //     if($result->isValid()){
+
+    //         $auth =Zend_Auth::getInstance();
+    //         $storage = $auth->getStorage();
+    //         $storage->write($authAdapter->getResultRowObject(array('id','email','is_banned','is_admin')));
+    //         return 1;
+    //     }
+    //     else
+    //     return 0;
+    // }
+
+    public function registerUser($userInfo)
+  {
+    $row = $this->createRow();
+    $row->username = $userInfo['username'];
+    $row->email = $userInfo['email'];
+    $row->password = md5($userInfo['password']);
+    $row->gender = $userInfo['gender'];
+    $row->country = $userInfo['country'];
+
+//set a session......
+    $db = Zend_Db_Table::getDefaultAdapter();
+    $authAdapter = new Zend_Auth_Adapter_DbTable($db,'user','email', 'password');
+    $auth =Zend_Auth::getInstance();
+    $storage = $auth->getStorage();
+    $storage->write($authAdapter->getResultRowObject(array('id','email')));
+
+    return $row->save();
+  }
+}
 

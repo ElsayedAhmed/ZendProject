@@ -2,7 +2,6 @@
 
 class MaterialController extends Zend_Controller_Action
 {
-
     public function init()
     {
         $authorization =Zend_Auth::getInstance();
@@ -54,14 +53,10 @@ class MaterialController extends Zend_Controller_Action
             if ($form->isValid($formData)) {
 
                 $name = $form->getValue('material_name');
-                
                 $user_id = $form->getValue('user_id');
                 $course_id = $form->getValue('course_id');
-
-                // $fullFilePath = $form->file->getFileName();
                 $file_path = $form->file->getFileName();
-                // Zend_Debug::dump($fullFilePath, '$fullFilePath');
-                // Zend_Debug::dump($form->file);
+
                if(!$form->file->receive()){
                     die("error uploading file");
                }
@@ -92,6 +87,38 @@ class MaterialController extends Zend_Controller_Action
             $this->redirect('Material/index');
     }
 
+
+    public function downloadAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->downloadMaterial($id);
+        $this->redirect('Material/index');
+
+    }
+
+      public function undownloadAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->undownloadMaterial($id);
+        $this->redirect('Material/index');
+
+    }
+
+     public function hideAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->hideMaterial($id);
+        $this->redirect('Material/index');
+
+    }
+
+    public function showAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->showMaterial($id);
+        $this->redirect('Material/index');
+
+    }
     public function listAction()
     {
         // action body
@@ -100,6 +127,37 @@ class MaterialController extends Zend_Controller_Action
     public function editAction()
     {
         // action body
+        $form=new Application_Form_Material();
+        $form->submit->setLabel('Edit');
+        $this->view->form=$form;
+        if($this->getRequest()->isPost()){
+            $formData=$this->getRequest()->getPost();
+            if($form->isValid($formData)){
+                $id = (int)$form->getValue('id');
+                $name=$form->getValue('name');
+                $file_path=$form->getValue('file_path');
+                $type=$form->getValue('type');
+                $is_downloadable=$form->getValue('is_downloadable');
+                $is_hidden=$form->getValue('is_hidden');
+                $downloads_count=$form->getValue('downloads_count');
+                $course_id=$form->getValue('course_id');
+                $user_id=$form->getValue('user_id');
+
+                $material=new Application_Model_DbTable_Material();
+                $material->updateMaterial($name, $user_id,$course_id, $file_path, $type,
+                           $is_downloadable, $is_hidden, $downloads_count);
+                $this->_helper->redirector('index');
+            }
+            else{
+                $form->populate($formData);
+            }
+        }else {
+                $id = $this->_getParam('id', 0);
+                if ($id > 0) {
+                $material = new Application_Model_DbTable_Material();
+                $form->populate($material->getMaterial($id));
+             }
+         }
     }
 
     public function detailsAction()
@@ -109,20 +167,17 @@ class MaterialController extends Zend_Controller_Action
         $id = $this->getRequest()->getParam('id');
         $my_material = $material->detailsMaterial($id);
 
-        
-        // $my_material = $this->material->detailsMaterial($id);
-
-        // $this->getResponse()
-        //      ->setHeader('Content-Disposition', 'attachment; filename=Eman')
-        //      ->setHeader('Content-type', 'application/x-pdf');
-        // echo file_get_contents("/zendProject/ZendProject/zendProject/public/upload/ZF_SLMS_P02.pdf");
-
-
         $this->_helper->layout->disableLayout();
-
         $this->view->my_material = $my_material;
     }
 
+    public function commentsAction()
+    {
+        $material_id = $this->getRequest()->getParam('id');
+        $comments = new Application_Model_DbTable_Material();
+        $this->view->results = $comments->comments(2); 
+   }
+    
 }
 
 

@@ -9,17 +9,22 @@
          <th>Category</th>
          <th colspan="2">Action</th>
     </tr>
-    <?php foreach($this->course as $course) : ?>
+    <?php foreach($this->results as $result) :
+    	$id = $result['id'];
+    	$name = $result['name'];
+		$category_id = $result['category_id'];
+     ?>
     <tr>
-         <td><a href="<?php echo $this->url(array('controller'=>'course', 'action'=>'edit', 'id'=>$course->id));?>"><?php echo $this->escape($course->name);?></a>
+         <td><a href="<?php echo $this->url(
+         array('controller'=>'course', 'action'=>'edit', 'id'=>$id));?>"><?php echo $result['name'];?></a>
          </td>
-         <td><?php echo $this->escape($course->category_id);?></a>
+         <td><?php echo $this->escape($result['category_id']);?></a>
          </td>
          <td>
              <a class="label label-primary" href="<?php echo $this->url(array('controller'=>'course',
-             'action'=>'edit', 'id'=>$course->id));?>">Edit</a>
+             'action'=>'edit', 'id'=>$id));?>">Edit</a>
              <a class="label label-danger" href="<?php echo $this->url(array('controller'=>'course',
-             'action'=>'delete', 'id'=>$course->id));?>">Delete</a>
+             'action'=>'delete', 'id'=>$id));?>">Delete</a>
          </td>
     </tr>
     <?php endforeach; ?>

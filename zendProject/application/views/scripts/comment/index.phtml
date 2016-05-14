@@ -1,4 +1,6 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Comment</b> and script/action name <b>index</b></p>
-</div>
+<?php foreach($this->comments as $comment){
+	echo $comment['content']."<br />";
+	echo $comment['user_id']."<br />";
+	echo $comment['material_id']."<br />";
+}
+?>

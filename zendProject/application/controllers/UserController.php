@@ -9,6 +9,15 @@ class UserController extends Zend_Controller_Action
        $this->model = new Application_Model_DbTable_User();
        $this->authorization = Zend_Auth::getInstance();
        //$this->front = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
+
+       require_once '/var/www/html/zendProject/ZendProject/zendProject/library/Zend/Mail/Transport/Smtp.php';
+        $config = array('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' => 'zendprojecteslam@gmail.com', 'password' => 'itiitiiti');
+        $smtpConnection = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+
+
+
+        // $tr = new Zend_Mail_Transport_Smtp('smpt.gmail.com', $config);
+        Zend_Mail::setDefaultTransport($smtpConnection);
     }
 
     public function indexAction()
@@ -72,19 +81,12 @@ class UserController extends Zend_Controller_Action
 }
 
 
-    
+   #sarah
     public function registerAction()
     {
-    //chech if session.....
-        if($this->authorization->hasIdentity()) {
-            $this->redirect('user/index');
-        }
-
         $form = new Application_Form_Register();
-        // $sess = new Zend_Session_Namespace('LikeLynda');
+        $sess = new Zend_Session_Namespace('LikeLynda');
         $this->view->form = $form;
-        #session
-        // $sess->username = $data['username'];
 
         if($this->getRequest()->isPost()){
             if($form->isValid($this->getRequest()->getParams())){
@@ -93,28 +95,62 @@ class UserController extends Zend_Controller_Action
                 $sess->username = $data['username'];
 
                 if ($this->model->registerUser($data)){
-                    // #send mail
-                    // $config = array('ssl' => 'tls',
-                    //     'auth' => 'login',
-                    //     'username' => 'sarah.zeftawy@gmail.com',
-                    //     'password' => '');
-
-                    // $transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
-
-                    // $mail = new Zend_Mail();
-                    // $mail->setBodyHtml($bodytext);
-                    // $mail->setFrom('sarah.zeftawy@gmail.com');
-                    // $mail->addTo($data['email'], 'LikeLynda User');
-                    // $mail->setSubject('Profile Activation');
-                    // $mail->send($transport);
+                    #send mail
+                    $this->mail = new Zend_Mail();
+                    $this->mail->setBodyText('Thanks '.$data['username']. ' for joining us 
+                        . your email address: '. $data['email']. ' Gender: '. $data['gender']. ' Country: '. $data['country'])
+                    ->setFrom('zendprojecteslam@gmail.com', 'Zend SLMS')
+                    ->addTo($data['email'], $data['username'])
+                    ->setSubject('ZEND SLMS New Account')
+                    ->send();
 
                     $this->redirect('user/index');
                 }
 
             }
         }
+    }
+
+    #sarah
+    public function profileAction()
+    {
+        // $form = new Application_Form_Profile();
+        // $this->view->form = $form;
+        // if($this->getRequest()->isPost()){
+            // if($form->isValid($this->getRequest()->getParams())){
+                // $data = $form->getValues();
+
+                #get user info
+        $old = $this->model->getprofile();
+        $form = new Application_Form_Profile();
+        $this->view->form = $form;
+        $this->view->img = $old[0]['image'];
+        // var_dump($this->view->img);
+        // die;
+        $form->populate($old[0]); 
+
+
 
     }
+
+    #sarah
+    public function editprofileAction()
+    {
+        $form = new Application_Form_Editprofile();
+        $this->view->form = $form;
+        if($this->getRequest()->isPost()){
+            if($form->isValid($this->getRequest()->getParams())){
+                $data = $form->getValues();
+                if ($this->model->setprofile($data)){
+                    $this->redirect('user/index');
+                }
+
+                // var_dump($old['username']);
+                // die;
+            }
+        }
+    }
+    
 
 
 }

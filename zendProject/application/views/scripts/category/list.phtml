@@ -1,0 +1,39 @@
+<ul class="nav nav-pills nav-stacked  col-xs-4 col-md-2" height="100" >
+    <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Admin'));?>">manage users</a></li>
+    <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Course'));?>">manage courses</a></li>
+     <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Category','action'=>'list'));?>">manage categories</a></li>
+    <li role="presentation" class="active">
+    <a href="<?php echo $this->url(array('controller'=>'category',
+	 'action'=>'add'));?>">Add Category</a></li>
+  	<li role="presentation" class="active"><a href="#">manage courses</a></li>
+    
+</ul>
+
+<!-- <a href="<?php echo $this->url(array('controller'=>'category',
+	 'action'=>'add'));?>">Add Category</a> -->
+<table border="1px">
+<tr>
+	 <th>Category</th>
+	 <th>Action</th>
+	 <th>&nbsp;</th>
+</tr>
+
+<?php foreach($this->categories as $category) : ?>
+<tr>
+ <td><?php echo $this->escape($category->name);?></td>
+ 	 <td>
+	 	<a href="<?php echo $this->url(array('controller'=>'category',
+	 	'action'=>'edit', 'id'=>$category->id));?>">Edit</a>
+		 <a href="<?php echo $this->url(array('controller'=>'category',
+	 	'action'=>'delete', 'id'=>$category->id));?>">Delete</a>
+	 </td>
+</tr>
+<?php endforeach; ?>
+<tr>
+				<td>
+				<p>
+				<a href="<?php echo $this->url(array('controller'=>'Admin','action'=>'index'));?>">back</a>
+				</p>
+				</td>
+			</tr>
+</table>

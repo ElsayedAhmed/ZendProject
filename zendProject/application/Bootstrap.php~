@@ -31,13 +31,20 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf8');
 
 	}
-// 	protected function _initAutoload() {
-//         // Add autoloader empty namespace
-//         $autoLoader = Zend_Loader_Autoloader::getInstance ();
-//         $autoLoader->registerNamespace('zend_');
-//         // Return it so that it can be stored by the bootstrap
-//         return $autoLoader;
-// }
+	  protected function _initFrontController()
+    {
+        $this->frontController = Zend_Controller_Front::getInstance();
+        $this->frontController->addModuleDirectory(APPLICATION_PATH
+                                                   . '/modules');
+        Zend_Controller_Action_HelperBroker::addPath(
+            'My/Controller/Action/Helper',
+            'My_Controller_Action_Helper'
+        );
+        $this->frontController->registerPlugin(new My_Controller_Plugin_Auth());
+        $this->frontController->setBaseUrl('/');
+    }
+
+	// $frontController->registerPlugin(new My_Controller_Plugin_Auth());
 
 }
 

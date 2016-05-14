@@ -1,15 +1,25 @@
-<ul class="nav nav-pills nav-stacked  col-xs-4 col-md-2" height="100" >
-    <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Admin'));?>">manage users</a></li>
-    <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Course'));?>">manage courses</a></li>
-     <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Category'));?>">manage categories</a></li>
-    <li role="presentation" class="active"><a href="#">manage courses</a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-	<li role="presentation" class="active"><a href="#"></a></li>
-	<li role="presentation" class="active"><a href="#">manage courses</a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-	<li role="presentation" class="active"><a href="#"></a></li>
-</ul>
+
+<?php
+$this->title = "Courses";
+$this->headTitle($this->title);
+?>
+<p><a href="<?php echo $this->url(array('controller'=>'course',
+ 'action'=>'add'));?>">Add new Course</a></p>
+<table>
+<tr>
+ <th>Course</th>
+ <th>&nbsp;</th>
+</tr>
+<?php foreach($this->course as $course) : ?>
+<tr>
+ <td><?php echo $this->escape($course->name);?></td>
+<!--  <td><?php echo $this->escape($user->gender);?></td>
+ --> <td>
+ <a href="<?php echo $this->url(array('controller'=>'course',
+ 'action'=>'edit', 'id'=>$course->id));?>">Edit</a>
+ <a href="<?php echo $this->url(array('controller'=>'course',
+ 'action'=>'delete', 'id'=>$course->id));?>">Delete</a>
+ </td>
+</tr>
+<?php endforeach; ?>
+</table>

@@ -63,6 +63,37 @@ class MaterialController extends Zend_Controller_Action
     public function editAction()
     {
         // action body
+        $form=new Application_Form_Material();
+        $form->submit->setLabel('Edit');
+        $this->view->form=$form;
+        if($this->getRequest()->isPost()){
+            $formData=$this->getRequest()->getPost();
+            if($form->isValid($formData)){
+                $id = (int)$form->getValue('id');
+                $name=$form->getValue('name');
+                $file_path=$form->getValue('file_path');
+                $type=$form->getValue('type');
+                $is_downloadable=$form->getValue('is_downloadable');
+                $is_hidden=$form->getValue('is_hidden');
+                $downloads_count=$form->getValue('downloads_count');
+                $course_id=$form->getValue('course_id');
+                $user_id=$form->getValue('user_id');
+
+                $material=new Application_Model_DbTable_Material();
+                $material->updateMaterial($name, $user_id,$course_id, $file_path, $type,
+                           $is_downloadable, $is_hidden, $downloads_count);
+                $this->_helper->redirector('index');
+            }
+            else{
+                $form->populate($formData);
+            }
+        }else {
+                $id = $this->_getParam('id', 0);
+                if ($id > 0) {
+                $material = new Application_Model_DbTable_Material();
+                $form->populate($material->getMaterial($id));
+             }
+         }
     }
 
 

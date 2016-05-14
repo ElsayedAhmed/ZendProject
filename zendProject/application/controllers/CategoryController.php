@@ -51,6 +51,27 @@ class CategoryController extends Zend_Controller_Action
     public function editAction()
     {
         // action body
+        $form=new Application_Form_Category();
+        $form->submit->setLabel('Save');
+        $this->view->form=$form;
+        if($this->getRequest()->isPost()){
+            $formData=$this->getRequest()->getPost();
+            if($form->isValid($formData)){
+                $name=$form->getValue('name');
+                $category=new Application_Model_DbTable_Category();
+                $category->updateCategory($id,$name);
+                $this->_helper->redirector('index');
+            }
+            else{
+                $form->populate($formData);
+            }
+        }
+             else {
+                    $id = $this->_getParam('id', 0);
+                    if ($id > 0) {
+                    $category = new Application_Model_DbTable_Category();
+                    $form->populate($category->getCategory($id));
+                 }}
     }
 
 

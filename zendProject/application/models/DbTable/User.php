@@ -135,7 +135,7 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
             'is_banned' => 1, ) ;
         $this->update($new_data, 'id = '. (int)$id);
     }
-}
+
 
     // public function loginUser($userInfo){
     //     $form = new Application_Form_Login();

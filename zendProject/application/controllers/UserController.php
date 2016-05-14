@@ -15,9 +15,9 @@ class UserController extends Zend_Controller_Action
     {
         // action body
     }
-    public function loginAction()
-    {
-
+    
+      public function loginAction()
+    {   
         $request = $this->getRequest();
         $form = new Application_Form_Login();
         if ($request->isPost()) {
@@ -49,36 +49,17 @@ class UserController extends Zend_Controller_Action
                         elseif ($row['is_admin']==0&&$row['is_banned']==0) {
                             $this->render('home');
                         }
-                    }
-                }else{
-                    $this->redirect('user/login');
-                }
 
-        if($this->authorization->hasIdentity()) {
-            // var_dump($this->front);
-            // die;
-            $this->redirect('user/index');
         }
-
-        $form = new Application_Form_Login();
-
-    //if request is post......
-        if ($this->getRequest()->isPost()) {
-            if ($form->isValid($this->getRequest()->getParams())) {
-                $data = $form->getValues();
-            }
-            if(!$this->model->loginUser($data)){
-                echo "<p><font size='4' color='red'><b>Invalid Username OR Password</b></font</p>";
-                $this->view->form = $form;
-                
-            }
-            if($this->model->loginUser($data)){
-                $this->redirect('user/index'); 
-
-            }
+    }else{
+            $this->redirect('user/login');
         }
-        $this->view->form=$form;
     }
+}
+            $this->view->form=$form;
+}
+
+    
     public function logoutAction()
     {
     $auth = Zend_Auth::getInstance();

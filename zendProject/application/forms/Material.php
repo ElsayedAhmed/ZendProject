@@ -73,7 +73,6 @@ class Application_Form_Material extends Zend_Form
         $file = new Zend_Form_Element_File('file');
         $file->setLabel('Upload a file:')
                 ->setDestination('upload');
-
         $file->addValidator('Count', false, 1);
         $file->addValidator('Extension', false, 'mp4,pdf,pptx,docx,jpg,png,gif');
 

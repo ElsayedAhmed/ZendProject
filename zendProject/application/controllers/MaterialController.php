@@ -60,7 +60,10 @@ class MaterialController extends Zend_Controller_Action
                 // $fullFilePath = $form->file->getFileName();
                 $file_path = $form->file->getFileName();
                 // Zend_Debug::dump($fullFilePath, '$fullFilePath');
-
+                // Zend_Debug::dump($form->file);
+               if(!$form->file->receive()){
+                    die("error uploading file");
+               }
                 $type = $form->getValue('type');
                 $is_downloadable = $form->getValue('is_downloadable');
                 $is_hidden = $form->getValue('is_hidden');

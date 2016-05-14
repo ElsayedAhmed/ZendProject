@@ -2,7 +2,6 @@
 
 class MaterialController extends Zend_Controller_Action
 {
-
     public function init()
     {
         /* Initialize action controller here */
@@ -52,6 +51,38 @@ class MaterialController extends Zend_Controller_Action
             $this->redirect('Material/index');
     }
 
+
+    public function downloadAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->downloadMaterial($id);
+        $this->redirect('Material/index');
+
+    }
+
+      public function undownloadAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->undownloadMaterial($id);
+        $this->redirect('Material/index');
+
+    }
+
+     public function hideAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->hideMaterial($id);
+        $this->redirect('Material/index');
+
+    }
+
+    public function showAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->showMaterial($id);
+        $this->redirect('Material/index');
+
+    }
     public function listAction()
     {
         // action body
@@ -63,6 +94,13 @@ class MaterialController extends Zend_Controller_Action
     }
 
 
+    public function commentsAction()
+    {
+        $material_id = $this->getRequest()->getParam('id');
+        $comments = new Application_Model_DbTable_Material();
+        $this->view->results = $comments->comments(2); 
+   }
+    
 }
 
 

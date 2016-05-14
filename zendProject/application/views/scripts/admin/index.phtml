@@ -1,44 +1,53 @@
-<ul class="nav nav-pills nav-stacked  col-xs-4 col-md-2" height="100" >
-    <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Admin'));?>">manage users</a></li>
-    <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Course'));?>">manage courses</a></li>
-     <li role="presentation" class="active"><a href="<?php echo $this->url(array('controller'=>'Category'));?>">manage categories</a></li>
-    <li role="presentation" class="active"><a href="#">manage courses</a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-	<li role="presentation" class="active"><a href="#"></a></li>
-	<li role="presentation" class="active"><a href="#">manage courses</a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-    <li role="presentation" class="active"><a href="#"></a></li>
-	<li role="presentation" class="active"><a href="#"></a></li>
-</ul>
+<div class="col-md-6">
+   		<ul class="nav nav-tabs nav-justified">
+			<a href="<?php echo $this->url(array('controller'=>'Admin',
+			 'action'=>'add'));?>">Add</a><br />
+		</ul>
+    <table class="table table-bordered table-condensed table-hover">
 
-<p><a href="<?php echo $this->url(array('controller'=>'Admin',
- 'action'=>'add'));?>">Add new user</a></p>
-
-<a href="<?php echo $this->url(array('controller'=>'Category',
- 'action'=>'index'));?>">Categories</a></p>
-
-<a href="<?php echo $this->url(array('controller'=>'Material',
- 'action'=>'index'));?>">Materials</a></p>
-
-<div class="panel panel-default col-md-3" >
-	    <table class="table">
-		  	<tr>
-				 <th><a href="fghjk">Username</a></th>
-				 <th>Gender</th>
-				 <th>&nbsp;</th>
-			</tr>
-			<?php foreach($this->user as $user) : ?>
+		<tr>
+			 <th>Username</th>
+			 <th>Email</th>
+			 <th>Gender</th>
+			 <th>Country</th>
+			 <th>Admin</th>
+			 <th>Banned</th>
+			 <th>Actions</th>
+		</tr>
+		<?php foreach($this->user as $user) : ?>
 			<tr>
-				 <td><?php echo $this->escape($user->username);?></td>
-				 <td><?php echo $this->escape($user->gender);?></td>
-				 <td><a href="<?php echo $this->url(array('controller'=>'Admin',
-				 'action'=>'edit', 'id'=>$user->id));?>">Edit</a>
-				 <a href="<?php echo $this->url(array('controller'=>'Admin',
-				 'action'=>'delete', 'id'=>$user->id));?>">Delete</a></td>
+			  	<td><?php echo $this->escape($user->username);?></td>
+				<td><?php echo $this->escape($user->email);?></td> 				    
+				<!-- <td><?php echo $this->escape($user->password);?></td> -->
+	            <!-- <td><?php echo $this->escape($user->image);?></td> -->
+			    <!-- <td><?php echo $this->escape($user->signature);?></td> -->
+				<td><?php echo $this->escape($user->gender);?></td>
+				<td><?php echo $this->escape($user->country);?></td>
+				<td>
+						<?php if($user->is_admin == 0){ ?>
+							<a class = "label label-primary" href="<?php echo $this->url(array('controller'=>'Admin','action'=>'upgrade','id'=>$user->id));?>">
+							<?php echo $this->escape($user->is_admin);   }
+						else{ ?>
+							<a class = "label label-primary" href="<?php echo $this->url(array('controller'=>'Admin','action'=>'degrade','id'=>$user->id));?>">
+							<?php echo $this->escape($user->is_admin); }?>
+						 </a>
+				</td>
+				<td>
+					 <?php if($user->is_banned == 0){ ?>
+							<a class = "label label-primary" href="<?php echo $this->url(array('controller'=>'Admin','action'=>'ban','id'=>$user->id));?>">
+							<?php echo $this->escape($user->is_banned);   }
+						else{ ?>
+							<a class = "label label-primary" href="<?php echo $this->url(array('controller'=>'Admin','action'=>'allow','id'=>$user->id));?>">
+							<?php echo $this->escape($user->is_banned); }?>
+						 </a>
+				</td>
+					
+
+				<td><a class = "label label-primary" href="<?php echo $this->url(array('controller'=>'Admin','action'=>'edit', 'id'=>$user->id));?>">Edit </a>
+
+				<a class = "label label-danger" href="<?php echo $this->url(array('controller'=>'Admin','action'=>'delete', 'id'=>$user->id));?>">Delete</a></td>
 			</tr>
-			<?php endforeach; ?>
-		</table>
+		<?php endforeach; ?>
+	</table>
+	<br/>
 </div>

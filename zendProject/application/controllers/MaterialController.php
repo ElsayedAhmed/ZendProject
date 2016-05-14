@@ -2,7 +2,6 @@
 
 class MaterialController extends Zend_Controller_Action
 {
-
     public function init()
     {
         $authorization =Zend_Auth::getInstance();
@@ -53,19 +52,19 @@ class MaterialController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             if ($form->isValid($formData)) {
 
-                $name = $form->getValue('name');
+                $name = $form->getValue('material_name');
                 $user_id = $form->getValue('user_id');
                 $course_id = $form->getValue('course_id');
-
-                // $fullFilePath = $form->file->getFileName();
                 $file_path = $form->file->getFileName();
-                // Zend_Debug::dump($fullFilePath, '$fullFilePath');
 
+               if(!$form->file->receive()){
+                    die("error uploading file");
+               }
                 $type = $form->getValue('type');
                 $is_downloadable = $form->getValue('is_downloadable');
                 $is_hidden = $form->getValue('is_hidden');
-                $downloads_count = $form->getValue('downloads_count');
-
+                $downloads_count = $form->getValue('Downloads');
+                
                 $user = new Application_Model_DbTable_Material();
                 $user->addMaterial($name, $user_id, $course_id, $file_path, $type,
                     $is_downloadable, $is_hidden, $downloads_count);
@@ -88,6 +87,38 @@ class MaterialController extends Zend_Controller_Action
             $this->redirect('Material/index');
     }
 
+
+    public function downloadAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->downloadMaterial($id);
+        $this->redirect('Material/index');
+
+    }
+
+      public function undownloadAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->undownloadMaterial($id);
+        $this->redirect('Material/index');
+
+    }
+
+     public function hideAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->hideMaterial($id);
+        $this->redirect('Material/index');
+
+    }
+
+    public function showAction($id){
+        $user = new Application_Model_DbTable_Material(); 
+        $id = $this->getRequest()->getParam('id');
+        $user->showMaterial($id);
+        $this->redirect('Material/index');
+
+    }
     public function listAction()
     {
         // action body
@@ -136,12 +167,17 @@ class MaterialController extends Zend_Controller_Action
         $id = $this->getRequest()->getParam('id');
         $my_material = $material->detailsMaterial($id);
 
-        
-        // $my_material = $this->material->detailsMaterial($id);
-        
+        $this->_helper->layout->disableLayout();
         $this->view->my_material = $my_material;
     }
 
+    public function commentsAction()
+    {
+        $material_id = $this->getRequest()->getParam('id');
+        $comments = new Application_Model_DbTable_Material();
+        $this->view->results = $comments->comments(2); 
+   }
+    
 }
 
 

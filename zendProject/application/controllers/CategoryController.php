@@ -50,7 +50,6 @@ class CategoryController extends Zend_Controller_Action
 
     public function editAction()
     {
-        // action body
         $form=new Application_Form_Category();
         $form->submit->setLabel('Save');
         $this->view->form=$form;
@@ -65,15 +64,20 @@ class CategoryController extends Zend_Controller_Action
             else{
                 $form->populate($formData);
             }
+        }else {
+            $id = $this->_getParam('id', 0);
+            if ($id > 0) {
+                $category = new Application_Model_DbTable_Category();
+                $form->populate($category->getCategory($id));
+            }
         }
-             else {
-                    $id = $this->_getParam('id', 0);
-                    if ($id > 0) {
-                    $category = new Application_Model_DbTable_Category();
-                    $form->populate($category->getCategory($id));
-                 }}
     }
 
+    public function coursesAction(){
+         $cat_id = $this->getRequest()->getParam('id');
+         $courses = new Application_Model_DbTable_Category();
+         $this->view->results = $courses->getCourses($cat_id);
+    }
 
 }
 

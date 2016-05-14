@@ -1,11 +1,26 @@
-<?php 
 
-if($this->my_material){
-		echo "<h3 style='margin-left:20;color:blue'>".$this->my_material['name']."</h3>";
-		echo "<h3 style='margin-left:20;'>".$this->my_material['file_path']."</h3>";
-		echo "<img src='http://{$_SERVER['HTTP_HOST']}/upload/".$this->my_material['file_path']."'/>";
+	<?php 
+		if($this->my_material){
 
-		echo "<h3 style='margin-left:20;'>".$this->my_material['type']."</h3>";
-	}
+			echo "<h3 style='margin-left:20;color:blue'>".$this->my_material['name']."</h3>";
+
+			if($this->my_material['type'] == 'image'){
+				echo "<img src='".$this->baseUrl()."/".$this->my_material['file_path']."'>";
+			}
+			
+			if($this->my_material['type'] == 'video'){
+				echo "<div style='position:relative; left: 27%;'>'<video controls >";
+				echo "<source src='".$this->baseUrl()."/".$this->my_material['file_path']."' />";
+				echo "</video></div>";
+			}
+
+			if($this->my_material['type'] == 'pdf'){
+				echo "<embed src='".$this->baseUrl()."/".$this->my_material['file_path']."' width='1100px' height='1100px'>";
+			}
+
+			// echo "<h3 style='margin-left:20;'>".$this->my_material['type']."</h3>";
+		}
 
 ?>
+
+       

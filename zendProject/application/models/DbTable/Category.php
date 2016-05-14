@@ -15,6 +15,11 @@ class Application_Model_DbTable_Category extends Zend_Db_Table_Abstract
 		return $row->toArray();
 	}
 
+    // public function getCategoryCourses($id){
+    //     $id = (int)$id;
+
+
+    // }
     public function addCategory($name)
     {
    	    $data = array('name' => $name);
@@ -25,10 +30,22 @@ class Application_Model_DbTable_Category extends Zend_Db_Table_Abstract
     {
         $data = array('name' => $name,);
         $this->update($data, 'id = '. (int)$id);
-   }
+    }
 
     public function deleteCategory($id)
     {
         return $this->delete('id='.$id);
+    }
+
+    public function getCourses($category_id){
+        $select = $this->_db->select()
+                ->from(array('category'=>'category'),array('*'))
+                ->join(array('course'=>'course'),'category.id=course.category_id',array('*'))
+                ->where('category.id=?',$category_id);
+
+        $results = $this->getAdapter()->fetchAll($select);
+        // $results = [10, 20, 30];        
+        return $results;
+        // Zend_Debug::dump($results);
     }
 }

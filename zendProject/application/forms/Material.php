@@ -60,8 +60,9 @@ class Application_Form_Material extends Zend_Form
             //          $is_hidden,$downloads_count,$course_id,$user_id
 
         $name = new Zend_Form_Element_Text('material_name');
-        $name->addFilter('Int');
+        $name->addFilter('stringTrim');
         $name->setLabel('name');
+        $name->addValidator('NotEmpty');
 
         $type = new Zend_Form_Element_Text('type');
         $type->setLabel('type')
@@ -73,7 +74,6 @@ class Application_Form_Material extends Zend_Form
         $file = new Zend_Form_Element_File('file');
         $file->setLabel('Upload a file:')
                 ->setDestination('upload');
-
         $file->addValidator('Count', false, 1);
         $file->addValidator('Extension', false, 'mp4,pdf,pptx,docx,jpg,png,gif');
 

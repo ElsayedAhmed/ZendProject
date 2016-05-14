@@ -9,7 +9,7 @@ class Application_Form_User extends Zend_Form
     {
         /* Form Elements & Other Definitions Here ... */
         $this->setName('user');
-         $this->setAttrib("class","col-xs-6 col-md-3 col-md-offset-4");
+        $this->setAttrib("class","col-xs-6 col-md-3 col-md-offset-4");
 
         $id=new Zend_Form_Element_Hidden('id');
         $id->addFilter('Int');
@@ -74,11 +74,13 @@ class Application_Form_User extends Zend_Form
 				 ->setAttrib("class", "form-control col-xs-6 col-md-3");
 
 		$is_admin=new Zend_Form_Element_Checkbox('is_admin');
-		$is_admin->setLabel('is_admin: ')
+		$is_admin->setLabel('admin: ')
 				 ->setUncheckedValue("admin");
 
-    	$is_banned=new Zend_Form_Element_Hidden('is_banned');
-    	// $is_banned->setLabel('is_banned')
+    	$is_banned=new Zend_Form_Element_Checkbox('is_banned');
+    	$is_banned->setLabel('banned: ')
+    			  ->setUncheckedValue("Banned");
+
     	// 		 ->setRequired('true')
     	// 		 ->addFilter('stripTags')
     	// 		 ->addFilter('stringTrim')

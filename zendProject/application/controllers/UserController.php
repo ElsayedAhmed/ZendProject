@@ -7,7 +7,8 @@ class UserController extends Zend_Controller_Action
     public function init()
     {
        $this->model = new Application_Model_DbTable_User();
-       $this->authorization =Zend_Auth::getInstance();
+       $this->authorization = Zend_Auth::getInstance();
+       //$this->front = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
     }
 
     public function indexAction()
@@ -16,6 +17,7 @@ class UserController extends Zend_Controller_Action
     }
     public function loginAction()
     {
+
         $request = $this->getRequest();
         $form = new Application_Form_Login();
         if ($request->isPost()) {
@@ -51,6 +53,28 @@ class UserController extends Zend_Controller_Action
                 }else{
                     $this->redirect('user/login');
                 }
+
+        if($this->authorization->hasIdentity()) {
+            // var_dump($this->front);
+            // die;
+            $this->redirect('user/index');
+        }
+
+        $form = new Application_Form_Login();
+
+    //if request is post......
+        if ($this->getRequest()->isPost()) {
+            if ($form->isValid($this->getRequest()->getParams())) {
+                $data = $form->getValues();
+            }
+            if(!$this->model->loginUser($data)){
+                echo "<p><font size='4' color='red'><b>Invalid Username OR Password</b></font</p>";
+                $this->view->form = $form;
+                
+            }
+            if($this->model->loginUser($data)){
+                $this->redirect('user/index'); 
+
             }
         }
         $this->view->form=$form;
